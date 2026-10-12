@@ -1,0 +1,465 @@
+:root {
+  --bg: #f5f6f8;
+  --card: #ffffff;
+  --text: #1d2129;
+  --muted: #6b7280;
+  --border: #e3e6eb;
+  --accent: #2563eb;
+  --green: #16a34a;
+  --red: #dc2626;
+  --orange: #d97706;
+
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #111318;
+    --card: #1b1e25;
+    --text: #e8eaed;
+    --muted: #9aa0a6;
+    --border: #2c3039;
+    --accent: #60a5fa;
+    --green: #4ade80;
+    --red: #f87171;
+    --orange: #fbbf24;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+button,
+input {
+  font: inherit;
+  color: inherit;
+}
+
+.container {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 24px 16px 48px;
+}
+
+h1 {
+  font-size: 1.5rem;
+  margin: 0 0 16px;
+}
+
+.month-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.month-nav > button {
+  width: 40px;
+  height: 40px;
+  font-size: 1.5rem;
+  line-height: 1;
+  border: 1px solid var(--border);
+  background: var(--card);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.month-picker {
+  position: relative;
+}
+
+.month-picker-trigger {
+  border: none;
+  background: none;
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-transform: capitalize;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 8px;
+}
+
+.month-picker-trigger:hover {
+  background: var(--card);
+}
+
+.caret {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.month-picker-popover {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  width: 280px;
+  max-width: calc(100vw - 32px);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 10px 30px rgb(0 0 0 / 0.15);
+}
+
+.month-picker-year {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.month-picker-year button {
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--border);
+  background: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.month-picker-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+
+.month-picker-grid button {
+  position: relative;
+  padding: 10px 0;
+  border: 1px solid transparent;
+  background: none;
+  border-radius: 8px;
+  cursor: pointer;
+  text-transform: capitalize;
+}
+
+.month-picker-grid button:hover {
+  background: var(--bg);
+}
+
+.month-picker-grid .is-current {
+  border-color: var(--accent);
+}
+
+.month-picker-grid .is-selected {
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}
+
+.month-picker-grid .is-selected:hover {
+  background: var(--accent);
+}
+
+.month-picker-grid .dot {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+}
+
+.dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+.dot-pending {
+  background: var(--orange);
+}
+
+.dot-done {
+  background: var(--green);
+}
+
+.month-picker-legend {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 10px;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.link {
+  display: block;
+  margin: 8px auto 0;
+  border: none;
+  background: none;
+  color: var(--accent);
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin: 20px 0;
+}
+
+.summary div {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.summary span {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.summary strong {
+  font-size: 1.05rem;
+}
+
+.summary .paid strong {
+  color: var(--green);
+}
+
+.summary .pending strong {
+  color: var(--orange);
+}
+
+.add-form {
+  display: grid;
+  grid-template-columns: 1fr 110px 120px auto;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.add-form input {
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--card);
+  min-width: 0;
+}
+
+.add-form > button,
+.empty button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.repeat {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.repeat label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.repeat select,
+.add-form .repeat input {
+  padding: 6px 8px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--card);
+  color: var(--text);
+  font: inherit;
+}
+
+.add-form .repeat input {
+  width: 70px;
+}
+
+.repeat-hint {
+  color: var(--accent);
+}
+
+.day-picker {
+  position: relative;
+}
+
+.day-picker-trigger {
+  width: 100%;
+  height: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--card);
+  text-align: left;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.day-picker-trigger.is-empty {
+  color: var(--muted);
+}
+
+.day-picker-popover {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 10;
+  width: 260px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px;
+  box-shadow: 0 10px 30px rgb(0 0 0 / 0.15);
+}
+
+.day-picker-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  text-align: center;
+}
+
+.day-picker-grid .weekday {
+  font-size: 0.75rem;
+  color: var(--muted);
+  padding: 4px 0;
+}
+
+.day-picker-grid button {
+  aspect-ratio: 1;
+  border: 1px solid transparent;
+  background: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.day-picker-grid button:hover {
+  background: var(--bg);
+}
+
+.day-picker-grid .is-current {
+  border-color: var(--accent);
+}
+
+.day-picker-grid .is-selected,
+.day-picker-grid .is-selected:hover {
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}
+
+@media (max-width: 520px) {
+  .add-form {
+    grid-template-columns: 1fr 1fr;
+  }
+  .add-form input:first-child {
+    grid-column: 1 / -1;
+  }
+  .add-form > button {
+    grid-column: 1 / -1;
+  }
+}
+
+.empty {
+  text-align: center;
+  color: var(--muted);
+  padding: 32px 0;
+}
+
+.bills {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.bills li {
+  display: grid;
+  grid-template-columns: 1fr auto auto auto;
+  align-items: center;
+  gap: 12px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.bills label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  min-width: 0;
+}
+
+.bills input[type='checkbox'] {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--green);
+  flex-shrink: 0;
+}
+
+.bill-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bill-due {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.bill-amount {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.remove {
+  border: none;
+  background: none;
+  color: var(--muted);
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 0 4px;
+}
+
+.remove:hover {
+  color: var(--red);
+}
+
+.is-paid {
+  opacity: 0.55;
+}
+
+.is-paid .bill-name {
+  text-decoration: line-through;
+}
+
+.is-overdue {
+  border-color: var(--red) !important;
+}
+
+.is-overdue .bill-due {
+  color: var(--red);
+}
